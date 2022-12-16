@@ -16,6 +16,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: purple;
+    gap: 10px;
 }
 
 .middle {
