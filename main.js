@@ -1,9 +1,11 @@
 const sizeButton = document.querySelector('.button1');
 const clearButton = document.querySelector('.button2');
-const eraseButton = document.querySelector('.eraseButton')
+const eraseButton = document.querySelector('.eraseButton');
+const rainbowButton = document.querySelector('#rainbowButton');
 const gridContainer = document.querySelector('.grid-container');
 
 let eraseMode = false;
+let rainbowMode = false;
 
 function switchEraseMode(bool) {
     eraseMode = bool;
@@ -17,11 +19,30 @@ function switchEraseMode(bool) {
             eraseButton.style.color = 'black';
             break;
     }
-}
+};
+
+function switchRainbowMode(bool) {
+    rainbowMode = bool;
+
+    switch (bool) {
+        case true:
+            rainbowButton.classList.add('animated');
+            break;
+
+        case false:
+            rainbowButton.classList.remove('animated');
+            break;
+    }
+    console.log(rainbowButton.classList);
+};
 
 function changeColor(e) {
     if (eraseMode == false) {
-        e.target.style.backgroundColor = 'black';
+        if (!rainbowMode) {
+            e.target.style.backgroundColor = 'black';
+        } else if (rainbowMode) {
+            e.target.style.backgroundColor = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`
+        }
     } else if (eraseMode == true) {
         e.target.style.backgroundColor = 'white';
     }
@@ -44,6 +65,7 @@ function addDivsToContainer(count) {
 
 function clearGridContainer() {
     switchEraseMode(false);
+    switchRainbowMode(false);
 
     const squares = gridContainer.querySelectorAll('div');
     squares.forEach((div) => div.remove());
@@ -54,6 +76,7 @@ function clearGridContainer() {
 
 function checkGridSizeInput() {
     switchEraseMode(false);
+    switchRainbowMode(false);
 
     userInput = +(prompt('Please enter grid size (1-64): '))
     if (userInput > 64 || userInput < 1) {
@@ -66,10 +89,19 @@ function checkGridSizeInput() {
 sizeButton.addEventListener('click', checkGridSizeInput);
 clearButton.addEventListener('click', clearGridContainer);
 eraseButton.addEventListener('click', function () {
+    switchRainbowMode(false);
     if (!eraseMode) {
         switchEraseMode(true)
     } else if (eraseMode) {
         switchEraseMode(false)
+    }
+});
+rainbowButton.addEventListener('click', function() {
+    switchEraseMode(false);
+    if (!rainbowMode) {
+        switchRainbowMode(true);
+    } else if (rainbowMode) {
+        switchRainbowMode(false);
     }
 });
 
